@@ -16,7 +16,7 @@ enum Navigation {
 
 class Router{
     
-    var presenter = Presenter()
+    
     
     func navigate (to navigationDestiny: Navigation)-> UIView?{
         

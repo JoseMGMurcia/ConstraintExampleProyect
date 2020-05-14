@@ -59,6 +59,13 @@ class ModalViewController : UIViewController  {
         print("View size: \(viewToShow.bounds.height) x \(viewToShow.bounds.width)")
         print("Background dimensions: \(view.bounds.height) x \(view.bounds.width)")
         
+        if height > self.view.bounds.height{
+            print("modal view must be scrollable")
+            scrollableView.frame = CGRect(x: 0, y: minY, width: self.view.bounds.width, height: self.view.bounds.height)
+            scrollableView.contentSize = CGSize(width: scrollableView.bounds.width, height: height)
+            scrollableView.scrollsToTop = true
+        }
+        
     }
     
     

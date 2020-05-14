@@ -32,8 +32,8 @@ class XibBasicView: UIView {
         addSubview(mainView)
         mainView.addSubview(label)
         
-        //label.text! += label.text! + label.text! + label.text! + label.text! + label.text!
-        label.text! = "Su dispositivo ha sido vinculado correctamente."
+        label.text! += label.text! + label.text! + label.text! + label.text! + label.text!
+        //label.text! = "Su dispositivo ha sido vinculado correctamente."
         
         label.sizeToFit()
              

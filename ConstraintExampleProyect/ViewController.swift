@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
    
-        
-    //var whiteAreaView = UIView()
     var whiteAreaView = UIScrollView()
    
     var titleView = UIView()
@@ -30,7 +28,8 @@ class ViewController: UIViewController {
     var oKButton = UIButton()
     var cancelButton = UIButton()
     
-     
+    var labels = [UILabel]()
+
     let cornerRadius : CGFloat = 10.0
       
     var constraints = [NSLayoutConstraint]()
@@ -42,10 +41,8 @@ class ViewController: UIViewController {
     let lightBlue : UIColor = UIColor(red: 0.005, green: 0.8, blue: 0.9, alpha: 1)
          
          
-    let texts = ["Hey! Hemos detectado que te has conectado desde un dispositivo nuevo",  "Por tu seguridad, a partir de ahora vamos a asociar este dispositivo como seguro para garantizar cualquier acción que lleves a cabo con tus tarjetas desde tu app de WiZink y así minimizar los riesgos de acciones fraudulentas.", "¿Deseas asociar este dispositivo como dispositivo seguro?", "Este proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguro", "Ahora no", "Asociar"]
+    let texts = ["Hey! Hemos detectado que te has conectado desde un dispositivo nuevo",  "Por tu seguridad, a partir de ahora vamos a asociar este dispositivo como seguro para garantizar cualquier acción que lleves a cabo con tus tarjetas desde tu app de WiZink y así minimizar los riesgos de acciones fraudulentas.", "¿Deseas asociar este dispositivo como dispositivo seguro?", "Este proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguroEste proceso desvinculará automáticamente tu dispositivo anterior y todas las autenticaciones llegarán al nuevo dispositivo seguro.", "Ahora no", "Asociar"]
      
-   
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,19 +53,19 @@ class ViewController: UIViewController {
         whiteAreaView.backgroundColor = UIColor.white
               
         view.addSubview(whiteAreaView)
-       
-        /*
-        // Test block
-        titleView.backgroundColor = UIColor.darkGray
         
+        whiteAreaView.frame = self.view.bounds
+        
+        
+       
+        /*         // Test block
+        titleView.backgroundColor = UIColor.darkGray
         warningTextLabel.backgroundColor = UIColor.lightGray
         warningInfoLabel.backgroundColor = UIColor.lightGray
         warningQuestionLabel.backgroundColor = UIColor.lightGray
-        
         buttonsView.backgroundColor = UIColor.lightGray
         warningChangesLabel.backgroundColor = UIColor.lightGray
-         closerButton.backgroundColor = UIColor.darkGray
-               
+        closerButton.backgroundColor = UIColor.darkGray
         */
         
         oKButton.backgroundColor = UIColor.darkGray
@@ -106,13 +103,9 @@ class ViewController: UIViewController {
         buttonsView.layer.cornerRadius = cornerRadius
         warningView.layer.cornerRadius = cornerRadius / 2
          
-       
-        
+        labels.append(contentsOf: [warningTextLabel, warningInfoLabel, warningQuestionLabel, warningChangesLabel])
         oKButton.addTarget(self, action: #selector(okButtonPressed(_:)), for: .touchUpInside)
-        
-        
-       //self.didRotate(from: UIInterfaceOrientation.landscapeLeft)  //Solution but no a good one
-      
+     
     }
     
     func aplyTexts(){
@@ -154,7 +147,7 @@ class ViewController: UIViewController {
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-             self.ajustViews(toHeight: view.bounds.height, toWidth: view.bounds.width )
+        self.ajustViews(toHeight: view.bounds.height, toWidth: view.bounds.width )
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -162,10 +155,9 @@ class ViewController: UIViewController {
             firstCharge = false
             self.ajustViews(toHeight: view.bounds.height, toWidth: view.bounds.width )
         }
+
         
     }
- 
-       
     
     func ajustViews(toHeight: CGFloat, toWidth: CGFloat){
         
@@ -184,21 +176,12 @@ class ViewController: UIViewController {
         oKButton.translatesAutoresizingMaskIntoConstraints = false
         warningSing.translatesAutoresizingMaskIntoConstraints = false
         
-        //var heightSpace : CGFloat = toHeight / 7
         var heightSpace : CGFloat
         var clearSpace : CGFloat = toWidth / 24
-  
         var height : CGFloat = 0
-        let views : [UIView] = [warningTextLabel, warningInfoLabel, warningQuestionLabel, warningChangesLabel]
         
         self.aplyTexts()
-        
-        for uiView in views{
-            print (uiView.bounds.height)
-            height += uiView.bounds.height
-        }
-        //let viewHeight : CGFloat = toHeight - heightSpace * 2
-        
+      
         let buttonsWidth, buttonsHeight, iconSide : CGFloat
         if (toHeight / 24 < clearSpace){
             buttonsWidth = toWidth / 4
@@ -210,26 +193,13 @@ class ViewController: UIViewController {
             buttonsHeight = toHeight / 15
             iconSide = clearSpace * 2
         }
-        
-        
-        height += clearSpace * 7 + buttonsHeight
-        print ("Totalheight : \(height)")
-        
-        heightSpace = (UIScreen.main.bounds.height - height) / 2
-        
+                
         let size : CGFloat = iconSide * 0.8
         closerButton.imageEdgeInsets = UIEdgeInsets(top: size , left: size, bottom: size , right: size )
-        
-        
         
         NSLayoutConstraint.deactivate(constraints)
         constraints.removeAll()
          
-        
-        //whiteAreaView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height - (clearSpace * 2), height: 100)
-        
-        let whiteAreaTC = whiteAreaView.topAnchor.constraint(equalTo: self.view.topAnchor , constant: heightSpace)
-       
         let whiteAreaLC : NSLayoutConstraint
         if ( toHeight < toWidth ){
             whiteAreaLC = whiteAreaView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
@@ -238,12 +208,8 @@ class ViewController: UIViewController {
             
         }
         let whiteAreaTlC = whiteAreaView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -clearSpace)
-         let whiteAreaHC = whiteAreaView.heightAnchor.constraint(equalToConstant: height)
-
-        
-        
-        constraints.append(contentsOf: [whiteAreaTC, whiteAreaLC, whiteAreaTlC , whiteAreaHC])
-
+  
+        constraints.append(contentsOf: [whiteAreaLC, whiteAreaTlC ])
         
         let titleViewTC = titleView.topAnchor.constraint(equalTo: whiteAreaView.topAnchor)
         let titleViewTlC = titleView.trailingAnchor.constraint(equalTo: whiteAreaView.trailingAnchor)
@@ -252,66 +218,51 @@ class ViewController: UIViewController {
         
         constraints.append(contentsOf: [titleViewTC, titleViewTlC, titleViewLC, titleViewHC])
         
-        
         let warningTextLabelTC = warningTextLabel.topAnchor.constraint(equalTo: titleView.safeAreaLayoutGuide.topAnchor, constant: clearSpace)
         let warningTextLabelTlC = warningTextLabel.trailingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.trailingAnchor ,constant: -(iconSide + clearSpace))
         let warningTextLabelLC = warningTextLabel.leadingAnchor.constraint(equalTo: titleView.safeAreaLayoutGuide.leadingAnchor, constant: clearSpace)
-        //let warningTextLabelBC = warningTextLabel.bottomAnchor.constraint(equalTo: titleView.safeAreaLayoutGuide.bottomAnchor, constant: -clearSpace)
-        
-        //constraints.append(contentsOf: [warningTextLabelTC, warningTextLabelTlC, warningTextLabelLC, warningTextLabelBC])
+
         constraints.append(contentsOf: [warningTextLabelTC, warningTextLabelTlC, warningTextLabelLC])
         
         let closerButtonTC = closerButton.topAnchor.constraint(equalTo: titleView.safeAreaLayoutGuide.topAnchor, constant: clearSpace)
-        let closerButtonTlC = closerButton.trailingAnchor.constraint(equalTo: titleView.safeAreaLayoutGuide.trailingAnchor ,constant: -clearSpace )
-        let closerButtonLC = closerButton.widthAnchor.constraint(equalToConstant: iconSide)
+        
+        let closerButtonLC = closerButton.leadingAnchor.constraint(equalTo: warningTextLabel.trailingAnchor)
+        let closerButtonWC = closerButton.widthAnchor.constraint(equalToConstant: iconSide)
         let closerButtonHC = closerButton.heightAnchor.constraint(equalToConstant: iconSide )
         
-        constraints.append(contentsOf: [closerButtonTC, closerButtonTlC, closerButtonLC, closerButtonHC])
-        
-        
+        constraints.append(contentsOf: [closerButtonTC, closerButtonLC, closerButtonWC, closerButtonHC])
+      
         
         let warningInfoLabelTC = warningInfoLabel.topAnchor.constraint(equalTo: warningTextLabel.safeAreaLayoutGuide.bottomAnchor, constant: clearSpace * 2)
         let warningInfoLabelTlC = warningInfoLabel.trailingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.trailingAnchor ,constant: -clearSpace)
         let warningInfoLabelLC = warningInfoLabel.leadingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.leadingAnchor, constant: clearSpace)
-        //let warningInfoLabelHC = warningInfoLabel.heightAnchor.constraint(equalToConstant: (viewHeight / (6 / 1.75) - clearSpace))
-        
         
         constraints.append(contentsOf: [warningInfoLabelTC, warningInfoLabelTlC, warningInfoLabelLC])
-        //constraints.append(contentsOf: [warningInfoLabelTC, warningInfoLabelTlC, warningInfoLabelLC, warningInfoLabelHC])
         
         let warningQuestionLabelTC = warningQuestionLabel.topAnchor.constraint(equalTo: warningInfoLabel.safeAreaLayoutGuide.bottomAnchor, constant: clearSpace)
         let warningQuestionLabelTlC = warningQuestionLabel.trailingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.trailingAnchor ,constant: -clearSpace)
         let warningQuestionLabelLC = warningQuestionLabel.leadingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.leadingAnchor, constant: clearSpace)
-        //let warningQuestionLabelHC = warningQuestionLabel.heightAnchor.constraint(equalToConstant: (viewHeight / 6 - clearSpace))
         
         constraints.append(contentsOf: [warningQuestionLabelTC, warningQuestionLabelTlC, warningQuestionLabelLC])
-        //constraints.append(contentsOf: [warningQuestionLabelTC, warningQuestionLabelTlC, warningQuestionLabelLC, warningQuestionLabelHC])
         
         let warningViewTC = warningView.topAnchor.constraint(equalTo: warningQuestionLabel.safeAreaLayoutGuide.bottomAnchor)
         let warningViewTlC = warningView.trailingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.trailingAnchor, constant: -clearSpace / 2)
         let warningViewLC = warningView.leadingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.leadingAnchor, constant: clearSpace / 2 )
-        //let warningViewHC = warningView.heightAnchor.constraint(equalToConstant: viewHeight / (6 / 1.25))
         
         constraints.append(contentsOf: [warningViewTC, warningViewTlC, warningViewLC])
-        //constraints.append(contentsOf: [warningViewTC, warningViewTlC, warningViewLC, warningViewHC])
-
         
         let warningChangesLabelTC = warningChangesLabel.topAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.topAnchor, constant: clearSpace / 8)
         let warningChangesLabelTlC = warningChangesLabel.trailingAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.trailingAnchor, constant: -clearSpace / 8 )
-        let warningChangesLabelLC = warningChangesLabel.leadingAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.leadingAnchor, constant: iconSide)
-        //let warningChangesLabelHC = warningChangesLabel.heightAnchor.constraint(equalToConstant: (viewHeight / 6 - clearSpace / 4 ))
+        let warningChangesLabelLC = warningChangesLabel.leadingAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.leadingAnchor, constant: iconSide + clearSpace)
         
         constraints.append(contentsOf: [warningChangesLabelTC, warningChangesLabelTlC, warningChangesLabelLC])
-        //constraints.append(contentsOf: [warningChangesLabelTC, warningChangesLabelTlC, warningChangesLabelLC, warningChangesLabelHC])
         
         let warningSingTC = warningSing.topAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.topAnchor, constant: clearSpace)
-        let warningSingTlC = warningSing.trailingAnchor.constraint(equalTo: warningChangesLabel.safeAreaLayoutGuide.leadingAnchor, constant: -clearSpace / 4)
         let warningSingLC = warningSing.leadingAnchor.constraint(equalTo: warningView.safeAreaLayoutGuide.leadingAnchor, constant: clearSpace / 4)
-        //let warningSingHC = warningSing.heightAnchor.constraint(equalToConstant: iconSide - clearSpace / 2 )
+        let warningSingHC = warningSing.heightAnchor.constraint(equalToConstant: iconSide)
+        let warningSingWC = warningSing.widthAnchor.constraint(equalToConstant: iconSide)
         
-        constraints.append(contentsOf: [warningSingTC, warningSingTlC, warningSingLC])
-        //constraints.append(contentsOf: [warningSingTC, warningSingTlC, warningSingLC, warningSingHC])
-
+        constraints.append(contentsOf: [warningSingTC, warningSingLC, warningSingHC, warningSingWC])
         
         let buttonsViewTC = buttonsView.topAnchor.constraint(equalTo: warningChangesLabel.safeAreaLayoutGuide.bottomAnchor, constant: clearSpace)
         let buttonsViewTlC = buttonsView.trailingAnchor.constraint(equalTo: whiteAreaView.safeAreaLayoutGuide.trailingAnchor)
@@ -319,7 +270,6 @@ class ViewController: UIViewController {
         let buttonsViewHC = buttonsView.heightAnchor.constraint(equalToConstant: buttonsHeight + (clearSpace * 2))
         
         constraints.append(contentsOf: [buttonsViewTC, buttonsViewTlC, buttonsViewLC, buttonsViewHC])
-
         
         let cancelButtonTC = cancelButton.centerYAnchor.constraint(equalTo: buttonsView.centerYAnchor)
         let okbuttonTC = oKButton.centerYAnchor.constraint(equalTo: buttonsView.centerYAnchor)
@@ -334,12 +284,36 @@ class ViewController: UIViewController {
        
         NSLayoutConstraint.activate(constraints)
         
+        view.layoutIfNeeded()
+        
+        
+        height = 0
+        for label in labels{
+            height += label.bounds.height
+        }
+        height += clearSpace * 7 + buttonsHeight
+        heightSpace = (UIScreen.main.bounds.height - height) / 2
+        
+        var whiteAreaTC = whiteAreaView.topAnchor.constraint(equalTo: self.view.topAnchor , constant: heightSpace)
+        var whiteAreaHC = whiteAreaView.heightAnchor.constraint(equalToConstant: height)
+
+        if  height > view.bounds.height{
+            print("white area must be scrollable")
+            whiteAreaTC = whiteAreaView.topAnchor.constraint(equalTo: self.view.topAnchor)
+            whiteAreaHC = whiteAreaView.heightAnchor.constraint(equalToConstant: view.bounds.height)
+            whiteAreaView.contentSize = CGSize(width: whiteAreaView.bounds.width, height: height)
+            
+           
+        }
+        whiteAreaView.isScrollEnabled = true
+        whiteAreaView.scrollsToTop = true
+        
+        
+        NSLayoutConstraint.activate([whiteAreaTC, whiteAreaHC])
+        constraints.append(contentsOf: [whiteAreaTC, whiteAreaHC])
         
     }
-    
-    
-    
-    
+     
     @objc func okButtonPressed(_ sender: UIButton!) {
         print("Ok button pressed")
         
